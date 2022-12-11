@@ -1,0 +1,6 @@
+.json
+.idea
+.log
+rover_logs
+states
+__pycache__
