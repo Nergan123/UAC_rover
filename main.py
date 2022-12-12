@@ -14,9 +14,11 @@ if __name__ == "__main__":
         os.makedirs('rover_logs')
 
     logging.basicConfig(
-        filename='rover_logs/expedition.log',
-        filemode='w',
         level=logging.DEBUG,
-        format='%(asctime)s [%(name)s]: %(levelname)s: %(message)s'
+        format='%(asctime)s [%(name)s]: %(levelname)s: %(message)s',
+        handlers=[
+            logging.FileHandler("rover_logs/expedition.log", 'w'),
+            logging.StreamHandler()
+        ]
     )
     main()

@@ -19,14 +19,18 @@ class PowerControl(BaseClass):
             self.panels.append(SolarPanels(i))
         self.load_state()
 
-    def check_charge(self):
+    def check_charge(self, condition) -> None:
         """ Checks if power supply in battery is sufficient for operation """
 
-        if self.battery_level < 30:
+        if self.battery_level < 2.3:
             self.log.warning(f"Insufficient charge: {self.battery_level}%")
-            self.charging()
+            self.charging(condition)
+        else:
+            self.log.info("Charge sufficient")
 
-    def charging(self):
+        self.save_state()
+
+    def charging(self, condition) -> None:
         """ Uses solar panels to charge battery until voltage is sufficient """
 
         threads = []
@@ -42,3 +46,20 @@ class PowerControl(BaseClass):
             thread.start()
         for thread in threads:
             thread.join()
+
+        while self.battery_level <= 4.2:
+            for panel in self.panels:
+                volt = panel.charge(condition)
+                self.receive_charge(volt)
+                self.log.info(f"Received {volt} volts. "
+                              f"Battery charge: {self.battery_level}")
+
+    def receive_charge(self, val) -> None:
+        """ Receives charge and adds it to battery supply"""
+
+        self.battery_level += val
+
+    def give_charge(self, val) -> float:
+        """ Removes charge value from battery and returns it"""
+        self.battery_level -= val
+        return val

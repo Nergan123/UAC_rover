@@ -1,5 +1,6 @@
 from helpers.BaseClass import BaseClass
 from power_control.PowerControl import PowerControl
+from modules.Weather.WeatherMain import WeatherMain
 
 
 class Rover(BaseClass):
@@ -14,11 +15,17 @@ class Rover(BaseClass):
         self.log.info("Rover activation started.")
         self.state = "Activating"
         self.power_handler = PowerControl()
+        self.weather_core = WeatherMain()
         self.load_state()
 
     def run(self) -> None:
         """ Main execution. Starts all processes in rover """
 
         self.log.info("Running")
-        print("Run")
-        self.power_handler.check_charge()
+        self.battery_check()
+
+    def battery_check(self):
+        """ Checks battery conditions"""
+
+        uv = self.weather_core.get_weather()
+        self.power_handler.check_charge(uv)

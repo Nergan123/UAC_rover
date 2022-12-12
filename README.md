@@ -9,11 +9,15 @@ the UAC is working hard for you, here on Earth and abroad.
 Following order from Samuel Hayden you are now responsible for fault detection in our
 rover expedition.
 
+Here's some information that might be useful for you.
+
 ## Rover architecture
 
 ```mermaid
 graph TD
 Rover-->PowerControl;
+Rover-->WeatherModule;
+WeatherModule-->UVIndexSensor
 PowerControl-->SolarPanel_1;
 PowerControl-->SolarPanel_2;
 ```

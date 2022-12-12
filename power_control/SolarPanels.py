@@ -7,6 +7,7 @@ class SolarPanels(BaseClass):
 
     SERIALIZABLE_FIELDS = [
         "state",
+        "identifier",
     ]
 
     def __init__(self, identifier=0):
@@ -17,7 +18,7 @@ class SolarPanels(BaseClass):
         self.state = "folded"
         self.load_state()
 
-    def unfold(self, lock):
+    def unfold(self, lock) -> None:
         """Unfolding solar panels"""
 
         with lock:
@@ -30,3 +31,12 @@ class SolarPanels(BaseClass):
 
         self.state = "unfolded"
         self.log.info("Successfully unfolded.")
+        self.save_state()
+
+    @staticmethod
+    def charge(conditions) -> float:
+        """ Receives weather conditions and returns voltage"""
+
+        output = int.from_bytes(conditions, "big")/255 * 0.1
+        time.sleep(1)
+        return output
