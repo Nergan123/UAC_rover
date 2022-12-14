@@ -28,4 +28,7 @@ class Rover(BaseClass):
         """ Checks battery conditions"""
 
         uv = self.weather_core.get_weather()
-        self.power_handler.check_charge(uv)
+        temp = self.weather_core.get_weather_temp()
+        charging_conditions = {"uv": uv,
+                               "temp": temp}
+        self.power_handler.check_charge(charging_conditions)

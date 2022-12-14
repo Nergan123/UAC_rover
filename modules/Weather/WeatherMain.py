@@ -1,6 +1,7 @@
 import time
 from helpers.BaseClass import BaseClass
 from modules.Weather.UVIndex import UVIndexSensor
+from modules.Weather.TemperatureSensor import TemperatureSensor
 
 
 class WeatherMain(BaseClass):
@@ -9,13 +10,16 @@ class WeatherMain(BaseClass):
         "state",
         "last_measurement",
         "date_measurement",
+        "last_temp_measurement"
     ]
 
     def __init__(self):
         super().__init__("weather_main")
         self.state = "active"
         self.uv_sensor = UVIndexSensor()
+        self.temp_sensor = TemperatureSensor()
         self.last_measurement = 0.5
+        self.last_temp_measurement = None
         self.date_measurement = time.time()
         self.log.info("Weather module active")
         self.load_state()
@@ -39,3 +43,10 @@ class WeatherMain(BaseClass):
         self.save_state()
 
         return output
+
+    def get_weather_temp(self):
+        """Outputs temperature. To combine this with function above as soon as OK."""
+        self.last_temp_measurement = self.temp_sensor.measure()
+        self.log.info(f"Current temperature = {self.last_temp_measurement} C")
+
+        return self.last_temp_measurement

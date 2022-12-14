@@ -18,11 +18,12 @@ class PowerControl(BaseClass):
         for i in range(2):
             self.panels.append(SolarPanels(i))
         self.load_state()
+        self.min_battery_level = 2.3
 
     def check_charge(self, condition) -> None:
         """ Checks if power supply in battery is sufficient for operation """
 
-        if self.battery_level < 2.3:
+        if self.battery_level < self.min_battery_level:
             self.log.warning(f"Insufficient charge: {self.battery_level}%")
             self.charging(condition)
         else:
@@ -47,11 +48,16 @@ class PowerControl(BaseClass):
         for thread in threads:
             thread.join()
 
+        # TODO: change so UV and temp changes while charging?
         while self.battery_level <= 4.2:
             for panel in self.panels:
-                volt = panel.charge(condition)
-                self.receive_charge(volt)
+                efficiency = panel.calc_efficiency(condition["temp"])
+                volt = panel.charge(condition["uv"])
+                resulting_voltage = volt * efficiency
+                self.receive_charge(resulting_voltage)
                 self.log.info(f"Received {volt} volts. "
+                              f"Temperature resulted in efficiency {efficiency}, "
+                              f"leading to voltage {resulting_voltage}."
                               f"Battery charge: {self.battery_level}")
 
     def receive_charge(self, val) -> None:

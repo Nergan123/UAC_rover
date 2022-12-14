@@ -17,7 +17,8 @@ Here's some information that might be useful for you.
 graph TD
 Rover-->PowerControl;
 Rover-->WeatherModule;
-WeatherModule-->UVIndexSensor
+WeatherModule-->UVIndexSensor; 
+WeatherModule-->TemperatureSensor;
 PowerControl-->SolarPanel_1;
 PowerControl-->SolarPanel_2;
 ```
