@@ -34,9 +34,18 @@ class SolarPanels(BaseClass):
         self.save_state()
 
     @staticmethod
+    def calc_efficiency(temp):
+        """The efficiency of the solar panels is dependent on temperature.
+        Optimal at 12-17 degrees."""
+
+        optimal_temp_range = range(12, 17)
+        efficiency = 1 if temp in optimal_temp_range else 0.7
+
+        return efficiency
+
+    @staticmethod
     def charge(conditions) -> float:
         """ Receives weather conditions and returns voltage"""
-
         output = int.from_bytes(conditions, "big")/255 * 0.1
         time.sleep(1)
         return output
