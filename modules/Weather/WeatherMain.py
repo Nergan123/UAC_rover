@@ -10,6 +10,7 @@ class WeatherMain(BaseClass):
         "state",
         "last_measurement",
         "date_measurement",
+        "last_temp_measurement"
     ]
 
     def __init__(self):
