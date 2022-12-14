@@ -4,7 +4,7 @@ from modules.Weather.WeatherMain import WeatherMain
 
 
 class Rover(BaseClass):
-    """ Main class. Controls whole rover"""
+
 
     SERIALIZABLE_FIELDS = [
         "state",

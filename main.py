@@ -4,7 +4,7 @@ from RoverFile import Rover
 
 
 def main():
-
+    """ Main function which runs all processes """
     rover = Rover()
     rover.run()
 
