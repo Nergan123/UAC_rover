@@ -48,7 +48,6 @@ class PowerControl(BaseClass):
         for thread in threads:
             thread.join()
 
-        # TODO: change so UV and temp changes while charging?
         while self.battery_level <= 4.2:
             for panel in self.panels:
                 efficiency = panel.calc_efficiency(condition["temp"])
